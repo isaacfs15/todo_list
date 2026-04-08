@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  senha    String
+  criadoEm DateTime @default(now()) @map("criado_em")
+  tarefas  Tarefa[]
+
+  @@map("usuarios")
+}
+
+model Tarefa {
+  id           Int      @id @default(autoincrement())
+  titulo       String
+  concluida    Boolean  @default(false)
+  usuarioId    Int      @map("usuario_id")
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  criadoEm     DateTime @default(now()) @map("criado_em")
+  atualizadoEm DateTime @updatedAt @map("atualizado_em")
+
+  @@map("tarefas")
+}
