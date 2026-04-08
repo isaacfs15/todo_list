@@ -1,0 +1,6 @@
+# Python
+analyzer-service/venv/
+analyzer-service/.env
+analyzer-service/__pycache__/
+analyzer-service/app/__pycache__/
+*.pyc
