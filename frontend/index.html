@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TodoList · UniEvangélica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <!-- ══ TELA DE AUTENTICAÇÃO ══ -->
+  <div id="telaAuth" class="tela-auth">
+    <div class="auth-painel">
+
+      <div class="auth-marca">
+        <div class="auth-logo">✦</div>
+        <h1 class="auth-titulo">TodoList</h1>
+        <p class="auth-subtitulo">Organize. Conclua. Avance.</p>
+      </div>
+
+      <!-- Abas -->
+      <div class="auth-abas">
+        <button class="aba aba-ativa" data-aba="login" onclick="alternarAba('login')">Entrar</button>
+        <button class="aba" data-aba="cadastro" onclick="alternarAba('cadastro')">Cadastrar</button>
+      </div>
+
+      <!-- Formulário Login -->
+      <form id="formLogin" class="auth-form" onsubmit="fazerLogin(event)">
+        <div class="campo">
+          <label>E-mail</label>
+          <input type="email" id="loginEmail" placeholder="seu@email.com" required autocomplete="email">
+        </div>
+        <div class="campo">
+          <label>Senha</label>
+          <input type="password" id="loginSenha" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <div id="erroLogin" class="mensagem-erro oculto"></div>
+        <button type="submit" class="btn-primario" id="btnLogin">
+          <span class="btn-texto">Entrar</span>
+          <span class="btn-spinner oculto">↻</span>
+        </button>
+      </form>
+
+      <!-- Formulário Cadastro -->
+      <form id="formCadastro" class="auth-form oculto" onsubmit="fazerCadastro(event)">
+        <div class="campo">
+          <label>Nome</label>
+          <input type="text" id="cadastroNome" placeholder="Seu nome completo" required autocomplete="name">
+        </div>
+        <div class="campo">
+          <label>E-mail</label>
+          <input type="email" id="cadastroEmail" placeholder="seu@email.com" required autocomplete="email">
+        </div>
+        <div class="campo">
+          <label>Senha</label>
+          <input type="password" id="cadastroSenha" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password">
+        </div>
+        <div id="erroCadastro" class="mensagem-erro oculto"></div>
+        <div id="sucessoCadastro" class="mensagem-sucesso oculto"></div>
+        <button type="submit" class="btn-primario" id="btnCadastro">
+          <span class="btn-texto">Criar conta</span>
+          <span class="btn-spinner oculto">↻</span>
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ══ TELA DO APP ══ -->
+  <div id="telaApp" class="oculto">
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho">
+      <div class="cabecalho-inner">
+        <div class="cabecalho-marca">
+          <span class="cabecalho-logo">✦</span>
+          <span class="cabecalho-nome">TodoList</span>
+        </div>
+        <div class="cabecalho-usuario">
+          <span id="nomeUsuario" class="usuario-nome"></span>
+          <button onclick="fazerLogout()" class="btn-logout" title="Sair">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Sair
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="conteudo">
+
+      <!-- Cards de estatísticas -->
+      <section class="stats-grade">
+        <div class="stat-card stat-total">
+          <div class="stat-numero" id="statTotal">0</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card stat-pendentes">
+          <div class="stat-numero" id="statPendentes">0</div>
+          <div class="stat-label">Pendentes</div>
+        </div>
+        <div class="stat-card stat-concluidas">
+          <div class="stat-numero" id="statConcluidas">0</div>
+          <div class="stat-label">Concluídas</div>
+        </div>
+      </section>
+
+      <!-- Formulário nova tarefa -->
+      <section class="card-novo">
+        <form id="formNovaTarefa" onsubmit="criarTarefa(event)">
+          <div class="novo-campo-grupo">
+            <input
+              type="text"
+              id="inputTitulo"
+              class="novo-input"
+              placeholder="Nova tarefa..."
+              required
+              autocomplete="off"
+            >
+            <button type="submit" class="btn-adicionar" id="btnAdicionar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Adicionar
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Filtros -->
+      <div class="filtros">
+        <button class="filtro filtro-ativo" data-filtro="todas" onclick="aplicarFiltro('todas', this)">Todas</button>
+        <button class="filtro" data-filtro="pendentes" onclick="aplicarFiltro('pendentes', this)">Pendentes</button>
+        <button class="filtro" data-filtro="concluidas" onclick="aplicarFiltro('concluidas', this)">Concluídas</button>
+      </div>
+
+      <!-- Lista de tarefas -->
+      <section class="card-lista">
+        <div id="estadoVazio" class="estado-vazio oculto">
+          <div class="estado-vazio-icone">◎</div>
+          <p>Nenhuma tarefa por aqui.</p>
+          <p class="estado-vazio-sub">Adicione sua primeira tarefa acima!</p>
+        </div>
+        <div id="carregando" class="carregando oculto">
+          <div class="spinner"></div>
+        </div>
+        <ul id="listaTarefas" class="lista-tarefas"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
