@@ -7,7 +7,7 @@ Arquitetura de microsserviços com 3 linguagens, 3 ORMs e autenticação JWT.
 ## 🏗 Arquitetura
 
 ```
-frontend/          → HTML + CSS + JS (pronto, sem alterações)
+frontend/          → HTML + CSS + JS (pronto, com alterações)
 task-service/      → 🟢 Node.js + Express + Prisma      (porta 3001)
 log-service/       → 🟠 PHP + Laravel + Eloquent         (porta 8000)
 analyzer-service/  → 🔵 Python + FastAPI + SQLAlchemy   (porta 8001)
